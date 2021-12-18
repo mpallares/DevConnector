@@ -1,9 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const auth = require('../../middleware/auth')
+const express = require('express');
+const router = express.Router();
+const getCurrentUserProfile = require('../../controllers/profile.controller');
+const auth = require('../../middleware/auth');
 
+router.get('/me', auth, getCurrentUserProfile);
 
-
-router.get('/me', auth, (req, res) => res.send('Profile route'))
-
-module.exports = router
+module.exports = router;

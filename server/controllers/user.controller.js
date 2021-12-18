@@ -1,4 +1,3 @@
-
 const { validationResult } = require('express-validator');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');

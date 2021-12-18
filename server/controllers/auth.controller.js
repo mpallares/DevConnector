@@ -4,7 +4,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')
 
-const getUser = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
@@ -55,4 +55,4 @@ const signUser = async (req, res) => {
   }
 };
 
-module.exports = { getUser, signUser };
+module.exports = { getCurrentUser, signUser };
