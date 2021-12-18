@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const auth = require('../../middleware/auth')
 
 
-router.get('/', (req, res) => res.send('Profile route'))
+
+router.get('/me', auth, (req, res) => res.send('Profile route'))
 
 module.exports = router
