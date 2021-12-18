@@ -1,8 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const getCurrentUserProfile = require('../../controllers/profile.controller');
+const {
+  getCurrentUserProfile,
+  createUpdateProfile,
+} = require('../../controllers/profile.controller');
 const auth = require('../../middleware/auth');
+const { check } = require('express-validator');
 
 router.get('/me', auth, getCurrentUserProfile);
+
+router.post(
+  '/',
+  [
+    auth,
+    [
+      check('status', 'Status is required').not().isEmpty(),
+      check('skills', 'Skills is required').not().isEmpty(),
+    ],
+  ],
+  createUpdateProfile
+);
 
 module.exports = router;
