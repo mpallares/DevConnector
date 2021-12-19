@@ -2,6 +2,26 @@ const { validationResult } = require('express-validator');
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 
+const getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+const getUserIdProfile = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
+
 const getCurrentUserProfile = async (req, res) => {
   console.log(req.user.id);
   try {
@@ -41,7 +61,7 @@ const createUpdateProfile = async (req, res) => {
   } = req.body;
 
   const profileFields = {};
-  profileFields.user = req.user.id
+  profileFields.user = req.user.id;
   if (company) profileFields.company = company;
   if (website) profileFields.website = website;
   if (location) profileFields.location = location;
@@ -80,4 +100,4 @@ const createUpdateProfile = async (req, res) => {
   }
 };
 
-module.exports = { getCurrentUserProfile, createUpdateProfile };
+module.exports = { getCurrentUserProfile, createUpdateProfile, getAllProfiles, getUserIdProfile };

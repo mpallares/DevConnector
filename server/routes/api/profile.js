@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {
+  getUserIdProfile,
+  getAllProfiles,
   getCurrentUserProfile,
   createUpdateProfile,
 } = require('../../controllers/profile.controller');
 const auth = require('../../middleware/auth');
 const { check } = require('express-validator');
+
+router.get('/', getAllProfiles)
 
 router.get('/me', auth, getCurrentUserProfile);
 
