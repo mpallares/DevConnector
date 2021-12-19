@@ -119,7 +119,7 @@ const deleteProfileAndUser = async (req, res) => {
   }
 };
 
-const updateProfileExperience = async (req, res) => {
+const updateProfileExp = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -138,9 +138,26 @@ const updateProfileExperience = async (req, res) => {
 
   try {
     const profile = await Profile.findOne({ user: req.user.id });
-    profile.experience.unshift(newExp)
-    await profile.save()
-    res.json(profile)
+    profile.experience.unshift(newExp);
+    await profile.save();
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+const deleteProfileExp = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.exp_id);
+
+    profile.experience.splice(removeIndex, 1);
+
+    await profile.save();
+    res.json(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -148,7 +165,8 @@ const updateProfileExperience = async (req, res) => {
 };
 
 module.exports = {
-  updateProfileExperience,
+  deleteProfileExp,
+  updateProfileExp,
   deleteProfileAndUser,
   getCurrentUserProfile,
   createUpdateProfile,

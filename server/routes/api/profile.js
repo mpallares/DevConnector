@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {
-  updateProfileExperience,
+  deleteProfileExp,
+  updateProfileExp,
   deleteProfileAndUser,
   getUserIdProfile,
   getAllProfiles,
@@ -59,7 +60,12 @@ router.put(
       check('from', 'From date is required').not().isEmpty(),
     ],
   ],
-  updateProfileExperience
+  updateProfileExp
 );
+
+// @route    DELETE api/profile/experience/:exp_id
+// @desc     Delete experience from profile
+// @access   Private
+router.delete('/experience/:exp_id', auth, deleteProfileExp)
 
 module.exports = router;
