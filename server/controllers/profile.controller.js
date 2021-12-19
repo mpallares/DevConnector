@@ -119,26 +119,15 @@ const deleteProfileAndUser = async (req, res) => {
   }
 };
 
-const updateProfileExp = async (req, res) => {
+const addProfileExp = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { title, company, location, from, to, current, description } = req.body;
-
-  const newExp = {
-    title,
-    company,
-    location,
-    from,
-    to,
-    current,
-    description,
-  };
 
   try {
     const profile = await Profile.findOne({ user: req.user.id });
-    profile.experience.unshift(newExp);
+    profile.experience.unshift(req.body);
     await profile.save();
     res.json(profile);
   } catch (err) {
@@ -164,9 +153,46 @@ const deleteProfileExp = async (req, res) => {
   }
 };
 
+const addProfileEdu = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.education.unshift(req.body);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+
+  const deleteProfileEdu = async(req, res) => {
+    try {
+      const foundProfile = await Profile.findOne({ user: req.user.id });
+      foundProfile.education = foundProfile.education.filter(
+        (edu) => edu._id.toString() !== req.params.edu_id
+      );
+      await foundProfile.save();
+      return res.status(200).json(foundProfile);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ msg: 'Server error' });
+    }
+  }
+  
+
 module.exports = {
+  deleteProfileEdu,
+  addProfileEdu,
   deleteProfileExp,
-  updateProfileExp,
+  addProfileExp,
   deleteProfileAndUser,
   getCurrentUserProfile,
   createUpdateProfile,

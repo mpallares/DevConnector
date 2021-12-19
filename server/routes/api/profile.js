@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const {
+  deleteProfileEdu,
+  addProfileEdu,
   deleteProfileExp,
-  updateProfileExp,
+  addProfileExp,
   deleteProfileAndUser,
   getUserIdProfile,
   getAllProfiles,
@@ -60,12 +62,34 @@ router.put(
       check('from', 'From date is required').not().isEmpty(),
     ],
   ],
-  updateProfileExp
+  addProfileExp
 );
 
 // @route    DELETE api/profile/experience/:exp_id
 // @desc     Delete experience from profile
 // @access   Private
-router.delete('/experience/:exp_id', auth, deleteProfileExp)
+router.delete('/experience/:exp_id', auth, deleteProfileExp);
+
+
+// @route    PUT api/profile/education
+// @desc     Add profile education
+// @access   Private
+router.put(
+  '/education',
+  auth,
+  check('school', 'School is required').notEmpty(),
+  check('degree', 'Degree is required').notEmpty(),
+  check('fieldofstudy', 'Field of study is required').notEmpty(),
+  check('from', 'From date is required and needs to be from the past')
+    .notEmpty()
+    .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+  addProfileEdu
+);
+
+
+// @route    DELETE api/profile/education/:edu_id
+// @desc     Delete education from profile
+// @access   Private
+router.delete('/education/:edu_id', auth, deleteProfileEdu);
 
 module.exports = router;
