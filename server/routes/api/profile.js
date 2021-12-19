@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
+  deleteProfileAndUser,
   getUserIdProfile,
   getAllProfiles,
   getCurrentUserProfile,
@@ -47,6 +48,6 @@ router.post(
 // @route    DELETE api/profile
 // @desc     Delete profile, user & posts
 // @access   Private
-
+router.delete('/', auth, deleteProfileAndUser)
 
 module.exports = router;
