@@ -155,38 +155,36 @@ const deleteProfileExp = async (req, res) => {
 
 const addProfileEdu = async (req, res) => {
   const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    try {
-      const profile = await Profile.findOne({ user: req.user.id });
-
-      profile.education.unshift(req.body);
-
-      await profile.save();
-
-      res.json(profile);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
 
-  const deleteProfileEdu = async(req, res) => {
-    try {
-      const foundProfile = await Profile.findOne({ user: req.user.id });
-      foundProfile.education = foundProfile.education.filter(
-        (edu) => edu._id.toString() !== req.params.edu_id
-      );
-      await foundProfile.save();
-      return res.status(200).json(foundProfile);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ msg: 'Server error' });
-    }
+    profile.education.unshift(req.body);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-  
+};
+
+const deleteProfileEdu = async (req, res) => {
+  try {
+    const foundProfile = await Profile.findOne({ user: req.user.id });
+    foundProfile.education = foundProfile.education.filter(
+      (edu) => edu._id.toString() !== req.params.edu_id
+    );
+    await foundProfile.save();
+    return res.status(200).json(foundProfile);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ msg: 'Server error' });
+  }
+};
 
 module.exports = {
   deleteProfileEdu,

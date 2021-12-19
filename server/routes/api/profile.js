@@ -92,4 +92,10 @@ router.put(
 // @access   Private
 router.delete('/education/:edu_id', auth, deleteProfileEdu);
 
+
+// @route    GET api/profile/github/:username
+// @desc     Get user repos from Github
+// @access   Public
+
+
 module.exports = router;
