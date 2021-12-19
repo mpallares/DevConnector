@@ -3,11 +3,11 @@ const Profile = require('../models/Profile');
 const User = require('../models/User');
 
 const getCurrentUserProfile = async (req, res) => {
+  console.log(req.user.id);
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate(
-      'user',
-      ['name', 'avatar']
-    );
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
@@ -19,6 +19,7 @@ const getCurrentUserProfile = async (req, res) => {
 };
 
 const createUpdateProfile = async (req, res) => {
+  console.log(req.user);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -40,6 +41,7 @@ const createUpdateProfile = async (req, res) => {
   } = req.body;
 
   const profileFields = {};
+  profileFields.user = req.user.id
   if (company) profileFields.company = company;
   if (website) profileFields.website = website;
   if (location) profileFields.location = location;
@@ -59,12 +61,12 @@ const createUpdateProfile = async (req, res) => {
 
   try {
     let profile = await Profile.findOne({ user: req.user.id });
-
+    console.log(profile);
     if (profile) {
       profile = await Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: profileFields },
-        { new: true }
+        { new: true, upsert: true, setDefaultsOnInsert: true }
       );
       return res.json(profile);
     }

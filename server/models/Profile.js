@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const ProfileSchema = new mongoose.Schema({
   user: {
@@ -39,16 +39,14 @@ const ProfileSchema = new mongoose.Schema({
         required: true
       },
       location: {
-        type: String,
-        required: true
+        type: String
       },
       from: {
         type: Date,
         required: true
       },
       to: {
-        type: Date,
-        required: true
+        type: Date
       },
       current: {
         type: Boolean,
@@ -57,7 +55,7 @@ const ProfileSchema = new mongoose.Schema({
       description: {
         type: String
       }
-    },
+    }
   ],
   education: [
     {
@@ -78,8 +76,7 @@ const ProfileSchema = new mongoose.Schema({
         required: true
       },
       to: {
-        type: Date,
-        required: true
+        type: Date
       },
       current: {
         type: Boolean,
@@ -113,4 +110,4 @@ const ProfileSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Profile = mongoose.model('profile', ProfileSchema)
+module.exports = mongoose.model('profile', ProfileSchema);
