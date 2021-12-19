@@ -2,6 +2,8 @@ const { validationResult } = require('express-validator');
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 
+
+
 const getAllProfiles = async (req, res) => {
   try {
     const profiles = await Profile.find().populate('user', ['name', 'avatar']);

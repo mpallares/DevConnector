@@ -3,6 +3,10 @@ const router = express.Router();
 const { check } = require('express-validator');
 const registerUser = require('../../controllers/user.controller')
 
+
+// @route    POST api/users
+// @desc     Register user
+// @access   Public
 router.post(
   '/',
   [
