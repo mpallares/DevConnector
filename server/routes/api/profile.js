@@ -11,6 +11,8 @@ const { check } = require('express-validator');
 
 router.get('/', getAllProfiles)
 
+router.get('/user/:user_id', getUserIdProfile)
+
 router.get('/me', auth, getCurrentUserProfile);
 
 router.post(
