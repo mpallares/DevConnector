@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createPost, getAllPosts} = require('../../controllers/post.controller.js')
+const {createPost, getAllPosts, getPostId} = require('../../controllers/post.controller.js')
 const auth = require('../../middleware/auth');
 const { check } = require('express-validator');
 const Post = require('../../models/Post');
@@ -19,6 +19,12 @@ router.post(
 // @desc     Get all posts
 // @access   Private
 router.get('/', auth, getAllPosts)
+
+
+// @route    GET api/posts/:id
+// @desc     Get post by ID
+// @access   Private
+router.get('/:id', auth, getPostId)
 
 
 module.exports = router;
