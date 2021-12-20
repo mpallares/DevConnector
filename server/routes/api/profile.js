@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
+  getUserRepos,
   deleteProfileEdu,
   addProfileEdu,
   deleteProfileExp,
@@ -96,6 +97,6 @@ router.delete('/education/:edu_id', auth, deleteProfileEdu);
 // @route    GET api/profile/github/:username
 // @desc     Get user repos from Github
 // @access   Public
-
+router.get('/github/:username', getUserRepos)
 
 module.exports = router;
