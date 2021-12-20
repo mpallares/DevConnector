@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createPost, getAllPosts, getPostId} = require('../../controllers/post.controller.js')
+const {createPost, getAllPosts, getPostId, deletePostId} = require('../../controllers/post.controller.js')
 const auth = require('../../middleware/auth');
 const { check } = require('express-validator');
 const Post = require('../../models/Post');
@@ -26,5 +26,10 @@ router.get('/', auth, getAllPosts)
 // @access   Private
 router.get('/:id', auth, getPostId)
 
+
+// @route    DELETE api/posts/:id
+// @desc     Delete post by ID
+// @access   Private
+router.delete('/:id', auth, deletePostId)
 
 module.exports = router;
