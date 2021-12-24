@@ -55,15 +55,44 @@ const getPostId = async (req, res) => {
 const deletePostId = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      res.status(404).json({ msg: 'Post not found' });
+    }
+
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
-    await post.remove()
-    res.json({msg: 'Post removed'})
+    await post.remove();
+    res.json({ msg: 'Post removed' });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+};
+
+const likePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (
+      post.likes.filter((like) => like.user.toString() === req.user.id).length >
+      0
+    ) {
+      return res.status(400).json({ msg: 'Post already liked' });
+    }
+
+    post.likes.unshift({ user: req.user.id });
+
+    await post.save();
+
+    res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 };
 
-module.exports = { createPost, getAllPosts, getPostId, deletePostId };
+module.exports = { createPost, getAllPosts, getPostId, deletePostId, likePost };
