@@ -95,4 +95,25 @@ const likePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getAllPosts, getPostId, deletePostId, likePost };
+const dislikePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
+      return res.status(400).json({ msg: 'Post has not yet been liked' });
+    }
+
+    post.likes = post.likes.filter(
+      ({ user }) => user.toString() !== req.user.id
+    );
+
+    await post.save();
+
+    return res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+}
+
+module.exports = { createPost, getAllPosts, getPostId, deletePostId, likePost, dislikePost };

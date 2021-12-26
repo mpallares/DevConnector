@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const {createPost, getAllPosts, getPostId, deletePostId, likePost} = require('../../controllers/post.controller.js')
+const {
+  createPost,
+  getAllPosts,
+  getPostId,
+  deletePostId,
+  likePost,
+  dislikePost,
+} = require('../../controllers/post.controller.js');
 const auth = require('../../middleware/auth');
 const { check } = require('express-validator');
 const Post = require('../../models/Post');
@@ -14,28 +21,29 @@ router.post(
   createPost
 );
 
-
 // @route    GET api/posts
 // @desc     Get all posts
 // @access   Private
-router.get('/', auth, getAllPosts)
-
+router.get('/', auth, getAllPosts);
 
 // @route    GET api/posts/:id
 // @desc     Get post by ID
 // @access   Private
-router.get('/:id', auth, getPostId)
-
+router.get('/:id', auth, getPostId);
 
 // @route    DELETE api/posts/:id
 // @desc     Delete post by ID
 // @access   Private
-router.delete('/:id', auth, deletePostId)
-
+router.delete('/:id', auth, deletePostId);
 
 // @route    PUT api/posts/like/:id
 // @desc     Like a post
 // @access   Private
-router.put('/like/:id', auth, likePost)
+router.put('/like/:id', auth, likePost);
+
+// @route    PUT api/posts/unlike/:id
+// @desc     Unlike a post
+// @access   Private
+router.put('/like/:id', auth, dislikePost);
 
 module.exports = router;
