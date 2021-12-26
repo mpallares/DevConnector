@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
+  deleteComment,
   addComment,
   createPost,
   getAllPosts,
@@ -57,6 +58,11 @@ router.post(
   addComment
 );
 
+
+// @route    DELETE api/posts/comment/:id/:comment_id
+// @desc     Delete comment
+// @access   Private
+router.delete('/comment/:id/:comment_id', auth, deleteComment)
 
 
 module.exports = router;
